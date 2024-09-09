@@ -1,17 +1,21 @@
 import { Navbar } from "../../components/Navbar"
 import { requestHook } from "../../hooks/request.hook"
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import styled from './styles.module.sass'
 import { groupsHook } from "../../hooks/groups.hook"
 import { GroupContext } from "../../contexts/group.context"
 import { useNavigate } from "react-router-dom"
-import { AddButton } from "../../components/AddButton"
+import AddGroup from "../../components/AddGroup"
 
 export const Home = () => {
     const { handleRequest } = requestHook('http://127.0.0.1/groups', 'GET')
     const { groups, fillGroups } = groupsHook()
     const { groupId, setGroupId, groupName, setGroupName } = useContext(GroupContext)
     const navigate = useNavigate()
+    const [isOpen, setIsOpen] = useState(false);
+
+    const handleOpen = () => setIsOpen(true)
+    const handleClose = () => setIsOpen(false)
 
     // useEffect(async () => {
     //     const response = await handleRequest()
@@ -42,8 +46,9 @@ export const Home = () => {
                     })
                 } */}
 
-                <AddButton/>
+                <button className={styled.addBtn} onClick={handleOpen}>+</button>
             </div>
         </div>
+        <AddGroup open={isOpen} hideModal={handleClose}/>
     </>
 }

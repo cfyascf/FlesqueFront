@@ -6,7 +6,6 @@ import styled from './styles.module.sass'
 import { requestHook } from "../../hooks/request.hook"
 import { GroupContext } from "../../contexts/group.context"
 import { useParams } from "react-router-dom"
-import { AddButton } from "../../components/AddButton"
 
 export const Tasks = () => {
     const { tasks, fillTasks } = groupsHook()
