@@ -17,6 +17,7 @@ const routes = createBrowserRouter([
         )
     },
     {
+        // path: '/group:id',
         path: '/group',
         element: (
             <Tasks/>

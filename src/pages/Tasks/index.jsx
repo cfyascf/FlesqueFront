@@ -1,24 +1,30 @@
-import { useEffect } from "react"
+import { useContext, useEffect } from "react"
 import { Navbar } from "../../components/Navbar"
 import { groupsHook } from "../../hooks/groups.hook"
 import { Task } from "./components/Task"
 import styled from './styles.module.sass'
 import { requestHook } from "../../hooks/request.hook"
+import { GroupContext } from "../../contexts/group.context"
+import { useParams } from "react-router-dom"
+import { AddButton } from "../../components/AddButton"
 
 export const Tasks = () => {
     const { tasks, fillTasks } = groupsHook()
-    const { handleRequest } = requestHook('http://127.0.0.1', 'GET')
+    const { groupId } = useParams()
+    const { handleRequest } = requestHook(`http://127.0.0.1/groups/${groupId}`, 'GET')
 
-    useEffect(() => {
-        const response = handleRequest()
-        fillTasks(response.tasks)
+    // useEffect(async () => {
+    //     const response = await handleRequest()
+    //     fillTasks(response.tasks)
 
-    }, [tasks])
+    // }, [tasks])
 
     return <>
         <Navbar/>
         <div className={styled.page}>
             <div className={styled.tasksGrid}>
+                <Task title={'Teste'} responsible={'testando'} description={'testando descricao testando testando'} checkedButton={2}/>
+
                 {/* {
                     tasks.forEach(t => {
                         return <>
@@ -26,6 +32,8 @@ export const Tasks = () => {
                         </>
                     })
                 } */}
+
+                <AddButton/>
             </div>
         </div>
     </>
