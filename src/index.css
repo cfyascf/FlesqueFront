@@ -1,5 +1,5 @@
 :root {
-  font-family: 'Roboto', ;
+  font-family: 'Roboto', sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -12,7 +12,7 @@
   -moz-osx-font-smoothing: grayscale;
 
   --default-blue: #3cabc6;
-  --default-grey: #f1f1f1;
+  --default-grey: #e6e6e6;
 }
 
 * {
