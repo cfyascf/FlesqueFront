@@ -9,7 +9,7 @@ export default function AddGroup(props){
     const { handleRequest } = requestHook('http://127.0.0.1:5000/group/create', 'POST')
 
     function handleSave(){
-        handleRequest({ name });
+        handleRequest({ group_name: name });
         props.hideModal();
     }
 

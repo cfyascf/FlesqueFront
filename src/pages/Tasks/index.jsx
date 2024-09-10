@@ -7,15 +7,23 @@ import { requestHook } from "../../hooks/request.hook"
 import { GroupContext } from "../../contexts/group.context"
 import { useParams } from "react-router-dom"
 import AddTask from "./components/AddTask"
+import DeleteTask from "./components/DeleteTask"
 
 export const Tasks = () => {
     const { tasks, fillTasks } = groupsHook()
     const { groupId } = useParams()
     const { handleRequest } = requestHook(`http://127.0.0.1/groups/${groupId}`, 'GET')
-    const [isOpen, setIsOpen] = useState(false);
+    const [isAddOpen, setIsAddOpen] = useState(false);
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [currTask, setCurrTask] = useState(0)
 
-    const handleOpen = () => setIsOpen(true)
-    const handleClose = () => setIsOpen(false)
+    const handleAddOpen = () => setIsAddOpen(true);
+    const handleAddClose = () => setIsAddOpen(false);
+    const handleDeleteOpen = (currId) => {
+        setIsDeleteOpen(true);
+        setCurrTask(currId);
+    }
+    const handleDeleteClose = () => setIsDeleteOpen(false);
 
     // useEffect(async () => {
     //     const response = await handleRequest()
@@ -27,7 +35,15 @@ export const Tasks = () => {
         <Navbar/>
         <div className={styled.page}>
             <div className={styled.tasksGrid}>
-                <Task title={'Teste'} responsible={'testando'} description={'testando descricao testando testando'} checkedButton={2}/>
+                <Task 
+                    title={'Teste'}
+                    responsible={'testando'}
+                    description={'testando descricao testando testando'}
+                    checkedButton={2}
+                    open={handleDeleteOpen}
+                    id={0}
+                    // id={item.id} //adicionar quando estiver dentro do map
+                />
 
                 {/* {
                     tasks.forEach(t => {
@@ -36,9 +52,10 @@ export const Tasks = () => {
                         </>
                     })
                 } */}
-                <button className={styled.addBtn} onClick={handleOpen}>+</button>
+                <button className={styled.addBtn} onClick={handleAddOpen}>+</button>
             </div>
         </div>
-        <AddTask open={isOpen} hideModal={handleClose}/>
+        <AddTask open={isAddOpen} hideModal={handleAddClose}/>
+        <DeleteTask open={isDeleteOpen} hideModal={handleDeleteClose} id={currTask}/>
     </>
 }
