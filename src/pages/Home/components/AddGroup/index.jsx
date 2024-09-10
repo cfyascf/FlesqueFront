@@ -2,11 +2,16 @@ import { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import { requestHook } from '../../hooks/request.hook';
+import { requestHook } from '../../../../hooks/request.hook';
 
 export default function AddGroup(props){
     const [name, setName] = useState("")
     const { handleRequest } = requestHook('http://127.0.0.1:5000/group/create', 'POST')
+
+    function handleSave(){
+        handleRequest({ name });
+        props.hideModal();
+    }
 
     return (
         <Modal show={props.open} onHide={props.hideModal}>
@@ -23,7 +28,7 @@ export default function AddGroup(props){
                 <Button variant="secondary" onClick={props.hideModal}>
                     Close
                 </Button>
-                <Button variant="primary" type='submit' onClick={() => handleRequest({ name })}>
+                <Button variant="primary" type='submit' onClick={() => handleSave()}>
                     Save Changes
                 </Button>
             </Modal.Footer>

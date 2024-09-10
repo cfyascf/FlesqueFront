@@ -5,7 +5,7 @@ import styled from './styles.module.sass'
 import { groupsHook } from "../../hooks/groups.hook"
 import { GroupContext } from "../../contexts/group.context"
 import { useNavigate } from "react-router-dom"
-import AddGroup from "../../components/AddGroup"
+import AddGroup from "./components/AddGroup"
 
 export const Home = () => {
     const { handleRequest } = requestHook('http://127.0.0.1/groups', 'GET')
