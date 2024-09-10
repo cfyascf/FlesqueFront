@@ -11,27 +11,29 @@ import { AddButton } from "../../components/AddButton"
 export const Tasks = () => {
     const { tasks, fillTasks } = groupsHook()
     const { groupId } = useParams()
-    const { handleRequest } = requestHook(`http://127.0.0.1/groups/${groupId}`, 'GET')
+    const { handleRequest } = requestHook(`/task/group?id=${groupId}`, 'GET')
 
-    // useEffect(async () => {
-    //     const response = await handleRequest()
-    //     fillTasks(response.tasks)
+    useEffect(() => {
+        updateTasks()
+    }, [])
 
-    // }, [tasks])
+    const updateTasks = async () => {
+        const response = await handleRequest()
+        console.log(response)
+        fillTasks(response.data.group_tasks)
+    }
 
     return <>
         <Navbar/>
         <div className={styled.page}>
             <div className={styled.tasksGrid}>
-                <Task title={'Teste'} responsible={'testando'} description={'testando descricao testando testando'} checkedButton={2}/>
-
-                {/* {
-                    tasks.forEach(t => {
+                {
+                    tasks.map(t => {
                         return <>
-                            <Task title={t.title} responsible={t.responsible} description={t.description} checkedButton={t.status}/>
+                            <Task title={t.title} responsible={t.responsible} description={t.desc} checkedButton={t.status}/>
                         </>
                     })
-                } */}
+                }
 
                 <AddButton/>
             </div>
