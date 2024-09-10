@@ -30,7 +30,7 @@ export const Tasks = () => {
                 {
                     tasks.map(t => {
                         return <>
-                            <Task title={t.title} responsible={t.responsible} description={t.desc} checkedButton={t.status}/>
+                            <Task title={t.title} responsible={t.user_fullname} description={t.desc} checkedButton={t.status}/>
                         </>
                     })
                 }
