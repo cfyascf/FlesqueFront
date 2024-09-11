@@ -6,9 +6,11 @@ import { groupsHook } from "../../hooks/groups.hook"
 import { GroupContext } from "../../contexts/group.context"
 import { useNavigate } from "react-router-dom"
 import AddGroup from "./components/AddGroup"
+import { UserContext } from "../../contexts/user.context"
 
 export const Home = () => {
-    const { handleRequest } = requestHook('http://127.0.0.1/groups', 'GET')
+    const { id } = useContext(UserContext)
+    const { handleRequest } = requestHook(`/group/get/user?id=${id}`, 'GET')
     const { groups, fillGroups } = groupsHook()
     const { groupId, setGroupId, groupName, setGroupName } = useContext(GroupContext)
     const navigate = useNavigate()
@@ -17,10 +19,16 @@ export const Home = () => {
     const handleOpen = () => setIsOpen(true)
     const handleClose = () => setIsOpen(false)
 
-    // useEffect(async () => {
-    //     const response = await handleRequest()
-    //     fillGroups(response.groups)
-    // }, [groups])
+    useEffect(() => {
+        updateGroups()
+    }, [])
+    
+    const updateGroups = async () => {
+        const response = await handleRequest()
+        console.log(response)
+        // console.log("oi")
+        fillGroups(response.data.user_groups)
+    }
 
     const handleClick = (groupId, groupName) => (e) => {
         e.preventDefault()
@@ -33,18 +41,16 @@ export const Home = () => {
         <Navbar />
         <div className={styled.page}>
             <div className={styled.groupGrid}>
-                <div className={styled.group} onClick={handleClick(1, 'teste')}>
-                    <p>{'teste'}</p>
-                </div>
-                {/* {
-                    groups.forEach(g => {
+                {
+                    groups.map(g => {
+                        console.log(g.group_id)
                         return <>
-                            <div className={styled.group} onClick={handleClick(g.id, g.name)}>
+                            <div className={styled.group} onClick={handleClick(g.group_id, g.name)}>
                                 <p>{g.name}</p>
                             </div>
                         </>
                     })
-                } */}
+                }
 
                 <button className={styled.addBtn} onClick={handleOpen}>+</button>
             </div>

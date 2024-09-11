@@ -6,34 +6,31 @@ import { useNavigate } from 'react-router-dom'
 import { UserContext, UserProvider } from '../../contexts/user.context'
 
 export const Login = () => {
-    const { email, fillEmail, password, fillPassword, error, showError } = loginHook
-    const { handleRequest } = requestHook('http://127.0.0.1/users/auth', 'POST')
+    const { email, fillEmail, password, fillPassword, error, showError } = loginHook()
+    const { handleRequest } = requestHook('/user/login', 'POST')
     const { setFullname, setId } = useContext(UserContext)
 
     const navigate = useNavigate()
 
-    const handleSend = (e) => {
+    const handleSend = async (e) => {
         e.preventDefault()
-
-        console.log(email, password)
 
         const data = {
             email: email,
             password: password
         }
 
-        console.log(data)
-
         try {
-            const response = handleRequest(data)
-            const user = response.obj
+            const response = await handleRequest(data)
+            const user = response.data.obj
 
             setFullname(user.fullname)
-            setId(user.setId)
+            setId(user.id)
 
             navigate('/home')
-
+            
         } catch(err) {
+            console.log("oi")
             showError()
         }
     }

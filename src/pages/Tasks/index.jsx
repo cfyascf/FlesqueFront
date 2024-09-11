@@ -25,11 +25,15 @@ export const Tasks = () => {
     }
     const handleDeleteClose = () => setIsDeleteOpen(false);
 
-    // useEffect(async () => {
-    //     const response = await handleRequest()
-    //     fillTasks(response.tasks)
+    useEffect(() => {
+        updateTasks()
+    }, [])
 
-    // }, [tasks])
+    const updateTasks = async () => {
+        const response = await handleRequest()
+        console.log(response)
+        fillTasks(response.data.group_tasks)
+    }
 
     return <>
         <Navbar/>
@@ -48,7 +52,7 @@ export const Tasks = () => {
                 {/* {
                     tasks.forEach(t => {
                         return <>
-                            <Task title={t.title} responsible={t.responsible} description={t.description} checkedButton={t.status}/>
+                            <Task title={t.title} responsible={t.responsible} description={t.desc} checkedButton={t.status}/>
                         </>
                     })
                 } */}
