@@ -6,10 +6,11 @@ import { requestHook } from '../../../../hooks/request.hook';
 
 export default function AddGroup(props){
     const [name, setName] = useState("")
-    const { handleRequest } = requestHook('http://127.0.0.1:5000/group/create', 'POST')
+    const { handleRequest } = requestHook('/group/create', 'POST')
 
     function handleSave(){
-        handleRequest({ group_name: name });
+        let a = { name }
+        handleRequest({ name });
         props.hideModal();
     }
 
