@@ -5,9 +5,10 @@ import { requestHook } from '../../hooks/request.hook'
 import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { UserContext, UserProvider } from '../../contexts/user.context'
+import Register from './Register'
 
 export const Login = () => {
-    const { email, fillEmail, password, fillPassword, error, showError } = loginHook()
+    const { email, fillEmail, password, fillPassword, error, showError, isRegisterOpen, handleRegisterOpen, handleRegisterClose } = loginHook()
     const { handleRequest } = requestHook()
     const { setFullname, setId } = useContext(UserContext)
 
@@ -49,12 +50,13 @@ export const Login = () => {
                     <input className={styled.input} type='text' placeholder='Insira o email' onChange={(e) => fillEmail(e.target.value)}></input>
                     <input className={styled.input} type='password' placeholder='Insira a senha' onChange={(e) => fillPassword(e.target.value)}></input>
                     <button className={styled.button} onClick={handleSend}>Enviar</button>
-                    <a className={styled.link}>Crie sua conta</a>
+                    <a className={styled.link} onClick={() => handleRegisterOpen()}>Crie sua conta</a>
                     <div className={error ? styled.error : styled.error_hidden}>
                         Incorrect login data.
                     </div>
                 </div>
             </div>
         </div>
+        <Register open={isRegisterOpen} hideModal={handleRegisterClose}/>
     </>
 }
