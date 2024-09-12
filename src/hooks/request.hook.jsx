@@ -24,6 +24,9 @@ export const requestHook = (link, verb) => {
             case 'PUT':
                 response = await axios.put(url, data, config)
                 break
+
+            case 'DELETE':
+                response = await axios.delete(url, data, config)
         }
         
 

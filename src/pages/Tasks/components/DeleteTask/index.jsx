@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import { requestHook } from '../../../../hooks/request.hook';
 
 export default function DeleteTask(props){
-    const { handleRequest } = requestHook('http://127.0.0.1:5000/task/create', 'DELETE')
+    const { handleRequest } = requestHook('/task/create', 'DELETE')
 
     function handleDelete(){
         handleRequest({ task_id: props.id });

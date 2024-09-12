@@ -9,10 +9,7 @@ export const Navbar = () => {
                     <Link to='/home' className={styled.button}>Home</Link>
                 </li>
                 <li>
-                    <Link to='/profile' className={styled.button}>Profile</Link>
-                </li>
-                <li>
-                    <Link to='/auth' className={styled.button}>Logout</Link>
+                    <Link to='/ ' className={styled.button}>Logout</Link>
                 </li>
             </ul>
         </div>

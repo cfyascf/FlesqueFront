@@ -7,7 +7,7 @@ import { requestHook } from '../../../../hooks/request.hook';
 export default function AddTask(props){
     const [title, setTitle] = useState("")
     const [desc, setDesc] = useState("")
-    const { handleRequest } = requestHook('http://127.0.0.1:5000/task/create', 'POST')
+    const { handleRequest } = requestHook('/task/create', 'POST')
 
     function handleSave(){
         handleRequest({ title, desc });

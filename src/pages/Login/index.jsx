@@ -38,7 +38,7 @@ export const Login = () => {
     return <>
         <div className={styled.page}>
             <div className={styled.formContainer}>
-                <h1>Login</h1>
+                <h1 className={styled.title}>Login</h1>
                 <input className={styled.input} type='text' placeholder='Insira o email' onChange={(e) => fillEmail(e.target.value)}></input>
                 <input className={styled.input} type='text' placeholder='Insira a senha' onChange={(e) => fillPassword(e.target.value)}></input>
                 <button className={styled.button} onClick={handleSend}>Enviar</button>

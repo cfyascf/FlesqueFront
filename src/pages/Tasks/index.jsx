@@ -38,7 +38,6 @@ export const Tasks = () => {
                         </>
                     })
                 }
-
                 <AddButton/>
             </div>
         </div>
