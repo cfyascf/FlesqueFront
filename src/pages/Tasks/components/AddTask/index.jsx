@@ -3,15 +3,23 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { requestHook } from '../../../../hooks/request.hook';
+import { useParams } from 'react-router-dom';
 
 export default function AddTask(props){
     const [title, setTitle] = useState("")
     const [desc, setDesc] = useState("")
-    const { handleRequest } = requestHook('/task/create', 'POST')
+    const [userFullname, setUserFullname] = useState("")
+    const { groupId } = useParams()
+    const { handleRequest } = requestHook()
 
-    function handleSave(){
-        handleRequest({ title, desc });
-        props.hideModal();
+    async function handleSave(e){
+        e.preventDefault()
+
+        const task = { title, desc, user_name: userFullname, group_id: groupId }
+        await handleRequest('/task/create', 'POST', task)
+
+        props.hideModal()
+        window.location.reload()
     }
 
     return (
@@ -27,7 +35,11 @@ export default function AddTask(props){
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Description</Form.Label>
-                        <Form.Control value={desc} type="text" placeholder="Name" onChange={(e) => setDesc(e.target.value)}/>
+                        <Form.Control value={desc} type="text" placeholder="Description" onChange={(e) => setDesc(e.target.value)}/>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Responsible user</Form.Label>
+                        <Form.Control value={userFullname} type="text" placeholder="User" onChange={(e) => setUserFullname(e.target.value)}/>
                     </Form.Group>
                 </Form>
             </Modal.Body>
@@ -35,7 +47,7 @@ export default function AddTask(props){
                 <Button variant="secondary" onClick={props.hideModal}>
                     Close
                 </Button>
-                <Button variant="primary" type='submit' onClick={() => handleSave()}>
+                <Button variant="primary" type='submit' onClick={(e) => handleSave(e)}>
                     Save Changes
                 </Button>
             </Modal.Footer>

@@ -1,10 +1,14 @@
-import { createContext, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 
 const UserContext = createContext()
 
 const UserProvider = ({ children }) => {
     const [fullname, setFullname] = useState('')
     const [id, setId] = useState(null)
+
+    useEffect(() => {
+        setId(sessionStorage.getItem("@USERID"))
+    }, [])
 
     return (
         <UserContext.Provider value={{

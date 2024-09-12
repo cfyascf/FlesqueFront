@@ -1,15 +1,15 @@
 import { useState } from "react"
 import axios from "axios"
 
-export const requestHook = (link, verb) => {
-    const [url, setUrl] = useState('http://127.0.0.1:5000' + link)
+export const requestHook = () => {
     const config = {
         headers: {
             'Content-Type': 'application/json'
         }
     }
-
-    const handleRequest = async (data) => {
+    
+    const handleRequest = async (uri, verb, data) => {
+        const [url, setUrl] = useState('http://127.0.0.1:5000' + uri)
         let response = ''
 
         switch(verb) {

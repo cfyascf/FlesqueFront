@@ -26,6 +26,7 @@ export const Login = () => {
 
             setFullname(user.fullname)
             setId(user.id)
+            sessionStorage.setItem("@USERID", user.id)
 
             navigate('/home')
             

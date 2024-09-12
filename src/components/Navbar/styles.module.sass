@@ -4,16 +4,37 @@
     position: fixed
     top: 0
     background-color: var(--default-blue)
-    padding: 0px 20px 0px 20px
+    padding: 0px 30px 0px 30px
     display: flex
     align-items: center
-    justify-content: center
+    justify-content: space-between
 
     .navbar
         display: flex
         gap: 100px
         color: white
         list-style-type: none
+        margin: 0
+        font-weight: 500
+        font-size: 1.1rem
+
+    .navbar:hover
+        color: var(--default-grey)
+
+    .title
+        display: flex
+        align-items: center
+        gap: 5px
+
+        img
+            width: 1.8rem
+
+        p 
+            margin: 0
+            font-weight: 500
+            font-size: 1.1rem
+            color: white
+            text-decoration: none
     
     .button
         cursor: pointer
@@ -21,11 +42,6 @@
         color: white
         cursor: pointer
 
-@media (max-width: 1060px)
-    .navbarContainer
-        height: 8vh 
-
-    .navbar
-        display: flex
-        margin-top: 12px
+    .button:hover
+        text-decoration: underline
 

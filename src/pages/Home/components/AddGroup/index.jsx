@@ -8,12 +8,11 @@ import { UserContext } from '../../../../contexts/user.context';
 export default function AddGroup(props){
     const [name, setName] = useState("")
     const { id } = useContext(UserContext)
-    const { handleRequest } = requestHook('/group/create', 'POST')
+    const { handleRequest } = requestHook()
 
     async function handleSave(){
-        console.log(name + "/" + id)
-        const response = await handleRequest({ name: name, admin_id: id });
-        console.log(response)
+        const group = { name: name, admin_id: id }
+        const response = await handleRequest('/group/create', 'POST', group);
         props.hideModal();
     }
 
