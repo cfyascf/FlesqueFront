@@ -1,16 +1,18 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { requestHook } from '../../../../hooks/request.hook';
+import { UserContext } from '../../../../contexts/user.context';
 
 export default function AddGroup(props){
     const [name, setName] = useState("")
-    const { handleRequest } = requestHook('/group/create', 'POST')
+    const { id } = useContext(UserContext)
+    const { handleRequest } = requestHook()
 
-    function handleSave(){
-        let a = { name }
-        handleRequest({ name });
+    async function handleSave(){
+        const group = { name: name, admin_id: id }
+        const response = await handleRequest('/group/create', 'POST', group);
         props.hideModal();
     }
 

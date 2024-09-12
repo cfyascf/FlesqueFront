@@ -2,17 +2,17 @@ import styled from './styles.module.sass'
 import editIcon from '/edit-icon.png'
 import deleteIcon from '/delete-icon.png'
 
-export const Task = ({ title, responsible, description, checkedButton, open, id }) => {
+export const Task = ({ title, responsible, description, checkedButton, deleteModal, updateModal, id }) => {
     return <>
         <div className={styled.task}>
             <div className={styled.header}>
                 <p className={styled.title}>{ title }</p>
                 <div className={styled.headerButtons}>
-                    <img src={editIcon} className={styled.icon}></img>
-                    <img src={deleteIcon} className={styled.icon} onClick={() => open(id)}></img>
+                    <img src={editIcon} className={styled.icon} onClick={() => updateModal(id)}></img>
+                    <img src={deleteIcon} className={styled.icon} onClick={() => deleteModal(id)}></img>
                 </div>
             </div>
-            <p className={styled.responsible}>{ responsible }</p>
+            <p className={styled.responsible}>Para { responsible }</p>
             <p className={styled.description}>{ description }</p>
 
             <div className={styled.buttonGroup}>

@@ -1,36 +1,34 @@
-import { useContext, useEffect, useState } from "react"
+import { useEffect } from "react"
 import { Navbar } from "../../components/Navbar"
 import { groupsHook } from "../../hooks/groups.hook"
 import { Task } from "./components/Task"
 import styled from './styles.module.sass'
 import { requestHook } from "../../hooks/request.hook"
-import { GroupContext } from "../../contexts/group.context"
 import { useParams } from "react-router-dom"
 import AddTask from "./components/AddTask"
 import DeleteTask from "./components/DeleteTask"
+import { taskModalHook } from "../../hooks/taskModal.hook"
+import UpdateTask from "./components/UpdateTask"
+import { useState } from "react"
 
 export const Tasks = () => {
     const { tasks, fillTasks } = groupsHook()
+    const { isAddOpen, handleAddOpen, handleAddClose,
+        isDeleteOpen, handleDeleteOpen, handleDeleteClose,
+        isUpdateOpen, handleUpdateOpen, handleUpdateClose,
+        currTask
+    } = taskModalHook()
     const { groupId } = useParams()
-    const { handleRequest } = requestHook(`http://127.0.0.1/groups/${groupId}`, 'GET')
-    const [isAddOpen, setIsAddOpen] = useState(false);
-    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-    const [currTask, setCurrTask] = useState(0)
-
-    const handleAddOpen = () => setIsAddOpen(true);
-    const handleAddClose = () => setIsAddOpen(false);
-    const handleDeleteOpen = (currId) => {
-        setIsDeleteOpen(true);
-        setCurrTask(currId);
-    }
-    const handleDeleteClose = () => setIsDeleteOpen(false);
+    const { handleRequest } = requestHook()
+    const [currTitle, setCurrTitle] = useState("");
+    const [currDesc, setCurrDesc] = useState("");
 
     useEffect(() => {
         updateTasks()
     }, [])
 
     const updateTasks = async () => {
-        const response = await handleRequest()
+        const response = await handleRequest(`/task/group?id=${groupId}`, 'GET')
         console.log(response)
         fillTasks(response.data.group_tasks)
     }
@@ -39,27 +37,27 @@ export const Tasks = () => {
         <Navbar/>
         <div className={styled.page}>
             <div className={styled.tasksGrid}>
-                <Task 
-                    title={'Teste'}
-                    responsible={'testando'}
-                    description={'testando descricao testando testando'}
-                    checkedButton={2}
-                    open={handleDeleteOpen}
-                    id={0}
-                    // id={item.id} //adicionar quando estiver dentro do map
-                />
-
-                {/* {
-                    tasks.forEach(t => {
-                        return <>
-                            <Task title={t.title} responsible={t.responsible} description={t.desc} checkedButton={t.status}/>
-                        </>
+                {
+                    tasks.map(t => {
+                        return(
+                            <Task
+                                key={t.task.task_id}
+                                title={t.task.title}
+                                responsible={t.user.fullname}
+                                description={t.task.desc}
+                                checkedButton={t.task.status}
+                                deleteModal={handleDeleteOpen}
+                                updateModal={handleUpdateOpen}
+                                id={t.task.task_id}
+                            />
+                        )
                     })
-                } */}
+                }
                 <button className={styled.addBtn} onClick={handleAddOpen}>+</button>
             </div>
         </div>
         <AddTask open={isAddOpen} hideModal={handleAddClose}/>
         <DeleteTask open={isDeleteOpen} hideModal={handleDeleteClose} id={currTask}/>
+        <UpdateTask open={isUpdateOpen} hideModal={handleUpdateClose} id={currTask}/>
     </>
 }

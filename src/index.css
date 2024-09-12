@@ -1,7 +1,8 @@
 :root {
   font-family: 'Roboto', sans-serif;
-  line-height: 1.5;
+  /* line-height: 1.5; */
   font-weight: 400;
+  font-size: 1rem;
 
   box-sizing: border-box;
   vertical-align: baseline;
@@ -11,8 +12,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --default-blue: #3cabc6;
+  --default-blue: #0d6efd;
   --default-grey: #e6e6e6;
+  --baby-blue: #e8f1ff
 }
 
 * {

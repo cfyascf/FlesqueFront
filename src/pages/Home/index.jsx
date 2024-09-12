@@ -6,32 +6,28 @@ import { groupsHook } from "../../hooks/groups.hook"
 import { GroupContext } from "../../contexts/group.context"
 import { useNavigate } from "react-router-dom"
 import AddGroup from "./components/AddGroup"
+// import { AddButton } from "../../components/AddButton"
 import { UserContext } from "../../contexts/user.context"
+import { groupModalHook } from "../../hooks/groupModal.hook"
 
 export const Home = () => {
-    const { id } = useContext(UserContext)
-    const { handleRequest } = requestHook(`/group/get/user?id=${id}`, 'GET')
+    const { handleRequest } = requestHook()
     const { groups, fillGroups } = groupsHook()
-    const { groupId, setGroupId, groupName, setGroupName } = useContext(GroupContext)
+    const { isOpen, handleOpen, handleClose } = groupModalHook()
+    const { id } = useContext(UserContext)
+    const { setGroupId, setGroupName } = useContext(GroupContext)
     const navigate = useNavigate()
-    const [isOpen, setIsOpen] = useState(false);
-
-    const handleOpen = () => setIsOpen(true)
-    const handleClose = () => setIsOpen(false)
-
-    useEffect(() => {
-        updateGroups()
-    }, [])
     
-    const updateGroups = async () => {
-        const response = await handleRequest()
-        console.log(response)
-        // console.log("oi")
+    useEffect(() => {
+        updateGroups(id)
+    }, [id])
+    
+    const updateGroups = async (id) => {
+        const response = await handleRequest(`/group/get/user?id=${id}`, 'GET')
         fillGroups(response.data.user_groups)
     }
 
     const handleClick = (groupId, groupName) => (e) => {
-        e.preventDefault()
         setGroupId(groupId)
         setGroupName(groupName)
         navigate(`/group/${groupId}`)
@@ -43,12 +39,12 @@ export const Home = () => {
             <div className={styled.groupGrid}>
                 {
                     groups.map(g => {
-                        console.log(g.group_id)
-                        return <>
-                            <div className={styled.group} onClick={handleClick(g.group_id, g.name)}>
-                                <p>{g.name}</p>
+                        return (
+                            <div key={g.group.group_id} className={styled.group} onClick={handleClick(g.group.group_id, g.group.name)}>
+                                <p className={styled.title}>{g.group.name}</p>
+                                <p className={styled.responsible}>De {g.user.fullname}</p>
                             </div>
-                        </>
+                        )
                     })
                 }
 

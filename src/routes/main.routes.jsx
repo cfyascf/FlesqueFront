@@ -5,7 +5,7 @@ import { Tasks } from "../pages/Tasks";
 
 const routes = createBrowserRouter([
     {
-        path: '/auth',
+        path: '/',
         element: (
             <Login/>
         )

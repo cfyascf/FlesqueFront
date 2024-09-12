@@ -1,4 +1,5 @@
 import styled from './styles.module.sass'
+import logo from '/company-blue.png'
 import { loginHook } from '../../hooks/login.hook'
 import { requestHook } from '../../hooks/request.hook'
 import { useContext } from 'react'
@@ -7,7 +8,7 @@ import { UserContext, UserProvider } from '../../contexts/user.context'
 
 export const Login = () => {
     const { email, fillEmail, password, fillPassword, error, showError } = loginHook()
-    const { handleRequest } = requestHook('/user/login', 'POST')
+    const { handleRequest } = requestHook()
     const { setFullname, setId } = useContext(UserContext)
 
     const navigate = useNavigate()
@@ -21,16 +22,17 @@ export const Login = () => {
         }
 
         try {
-            const response = await handleRequest(data)
+            const response = await handleRequest('/user/login', 'POST', data)
+            console.log("oi")
             const user = response.data.obj
 
             setFullname(user.fullname)
             setId(user.id)
+            sessionStorage.setItem("@USERID", user.id)
 
             navigate('/home')
             
         } catch(err) {
-            console.log("oi")
             showError()
         }
     }
@@ -38,12 +40,19 @@ export const Login = () => {
     return <>
         <div className={styled.page}>
             <div className={styled.formContainer}>
-                <h1>Login</h1>
-                <input className={styled.input} type='text' placeholder='Insira o email' onChange={(e) => fillEmail(e.target.value)}></input>
-                <input className={styled.input} type='text' placeholder='Insira a senha' onChange={(e) => fillPassword(e.target.value)}></input>
-                <button className={styled.button} onClick={handleSend}>Enviar</button>
-                <div className={error ? styled.error : styled.error_hidden}>
-                    Incorrect login data.
+                <div className={styled.branding}>
+                    <img src={logo}></img>
+                    <p>Flesque</p>
+                </div>
+                <div className={styled.form}>
+                    <h1 className={styled.title}>Login</h1>
+                    <input className={styled.input} type='text' placeholder='Insira o email' onChange={(e) => fillEmail(e.target.value)}></input>
+                    <input className={styled.input} type='password' placeholder='Insira a senha' onChange={(e) => fillPassword(e.target.value)}></input>
+                    <button className={styled.button} onClick={handleSend}>Enviar</button>
+                    <a className={styled.link}>Crie sua conta</a>
+                    <div className={error ? styled.error : styled.error_hidden}>
+                        Incorrect login data.
+                    </div>
                 </div>
             </div>
         </div>
