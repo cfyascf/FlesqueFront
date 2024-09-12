@@ -32,7 +32,7 @@ export const Tasks = () => {
                 {
                     tasks.map(t => {
                         return(
-                            <Task key={t.task.task_id} title={t.task.title} responsible={t.user.fullname} description={t.task.desc} checkedButton={t.task.status} handleDeleteOpen={handleDeleteOpen} id={t.task.task_id}/>
+                            <Task key={t.task.task_id} title={t.task.title} responsible={t.user.fullname} description={t.task.desc} checkedButton={t.task.status} open={handleDeleteOpen} id={t.task.task_id}/>
                         )
                     })
                 }

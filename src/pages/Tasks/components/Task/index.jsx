@@ -12,7 +12,7 @@ export const Task = ({ title, responsible, description, checkedButton, open, id 
                     <img src={deleteIcon} className={styled.icon} onClick={() => open(id)}></img>
                 </div>
             </div>
-            <p className={styled.responsible}>{ responsible }</p>
+            <p className={styled.responsible}>Para { responsible }</p>
             <p className={styled.description}>{ description }</p>
 
             <div className={styled.buttonGroup}>

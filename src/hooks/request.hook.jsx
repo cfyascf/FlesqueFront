@@ -9,12 +9,14 @@ export const requestHook = () => {
     }
     
     const handleRequest = async (uri, verb, data) => {
-        const [url, setUrl] = useState('http://127.0.0.1:5000' + uri)
+        const url = 'http://127.0.0.1:5000' + uri
+        console.log(url + "oi ")
         let response = ''
 
         switch(verb) {
             case 'POST':
                 response = await axios.post(url, data, config)
+                console.log(response)
                 break
 
             case 'GET':
@@ -24,9 +26,6 @@ export const requestHook = () => {
             case 'PUT':
                 response = await axios.put(url, data, config)
                 break
-
-            case 'DELETE':
-                response = await axios.delete(url, data, config)
         }
         
 
