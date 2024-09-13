@@ -17,11 +17,11 @@ export const Home = () => {
     const { id } = useContext(UserContext)
     const { setGroupId, setGroupName } = useContext(GroupContext)
     const navigate = useNavigate()
-    
+
     useEffect(() => {
         updateGroups(id)
     }, [id])
-    
+
     const updateGroups = async (id) => {
         const response = await handleRequest(`/group/get/user?id=${id}`, 'GET')
         fillGroups(response.data.user_groups)
@@ -48,9 +48,13 @@ export const Home = () => {
                     })
                 }
 
-                <button className={styled.addBtn} onClick={handleOpen}>+</button>
+                <button className={styled.addBtn} onClick={handleOpen}>
+                    <span class="material-symbols-outlined" color="white">
+                        edit
+                    </span>
+                </button>
             </div>
         </div>
-        <AddGroup open={isOpen} hideModal={handleClose}/>
+        <AddGroup open={isOpen} hideModal={handleClose} />
     </>
 }
