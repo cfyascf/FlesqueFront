@@ -3,6 +3,7 @@ import { useState } from "react";
 export const taskModalHook = () => {
     const [isAddOpen, setIsAddOpen] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [isUpdateOpen, setIsUpdateOpen] = useState(false);
     const [currTask, setCurrTask] = useState(0)
 
     const handleAddOpen = () => setIsAddOpen(true);
@@ -13,5 +14,15 @@ export const taskModalHook = () => {
     }
     const handleDeleteClose = () => setIsDeleteOpen(false);
 
-    return { isAddOpen, handleAddOpen, isDeleteOpen, handleAddClose, handleDeleteOpen, handleDeleteClose, currTask }
+    const handleUpdateOpen = (currId) => {
+        setIsUpdateOpen(true);
+        setCurrTask(currId);
+    }
+    const handleUpdateClose = () => setIsUpdateOpen(false);
+
+    return { isAddOpen, handleAddOpen, handleAddClose, 
+        isDeleteOpen, handleDeleteOpen, handleDeleteClose,
+        isUpdateOpen, handleUpdateOpen, handleUpdateClose,
+        currTask
+    }
 }

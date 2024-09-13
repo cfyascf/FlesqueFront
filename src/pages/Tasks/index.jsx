@@ -8,23 +8,31 @@ import { useParams } from "react-router-dom"
 import AddTask from "./components/AddTask"
 import DeleteTask from "./components/DeleteTask"
 import { taskModalHook } from "../../hooks/taskModal.hook"
+import UpdateTask from "./components/UpdateTask"
+import { Page } from "../../components/Page"
+import { filterHook } from "../../hooks/filter.hook"
+import { Filter } from "./components/Filter"
+import { Options } from "../../components/Options"
+import { Grid } from "../../components/Grid"
+import { NoData } from "../../components/NoData"
+
 
 export const Tasks = () => {
     const { tasks, fillTasks } = groupsHook()
-    const { isAddOpen, handleAddOpen, isDeleteOpen, handleAddClose, handleDeleteOpen, handleDeleteClose, currTask } = taskModalHook()
+    const { isAddOpen, handleAddOpen, handleAddClose,
+        isDeleteOpen, handleDeleteOpen, handleDeleteClose,
+        isUpdateOpen, handleUpdateOpen, handleUpdateClose,
+        currTask
+    } = taskModalHook()
+    const { filterType, setFilterType, filterShowing, setFilterShowing } = filterHook()
     const { groupId } = useParams()
     const { handleRequest } = requestHook()
-
-    const [filterShowing, setFilterShowing] = useState(false)
-    const [filterType, setFilterType] = useState('Sem filtro')
     const [hasTasks, setHasTasks] = useState(false)
 
     useEffect(() => {
         handleHasTasks()
-
         updateTasks()
-        console.log(filterType)
-    }, [filterType])
+    }, [filterType, tasks.length])
 
     const handleHasTasks = () => {
         if(tasks.length == 0)
@@ -35,39 +43,40 @@ export const Tasks = () => {
 
     const updateTasks = async () => {
         const response = await handleRequest(`/task/group?id=${groupId}&filter=${filterType}`, 'GET')
-        console.log(response)
         fillTasks(response.data.group_tasks)
     }
 
     return <>
         <Navbar />
-        <div className={styled.page}>
-            {/* DO HAS NO TASKS WARNING */}
-            <div className={styled.tasksGrid}>
+        <Page>
+            <Grid>
+                <NoData isShowing={hasTasks}/>
                 {
                     tasks.map(t => {
                         return (
-                            <Task key={t.task.task_id} title={t.task.title} responsible={t.user.fullname} description={t.task.desc} checkedButton={t.task.status} open={handleDeleteOpen} id={t.task.task_id} />
+                            <Task
+                                key={t.task.task_id}
+                                title={t.task.title}
+                                responsible={t.user.fullname}
+                                description={t.task.desc}
+                                checkedButton={t.task.status_id}
+                                deleteModal={handleDeleteOpen}
+                                updateModal={handleUpdateOpen}
+                                id={t.task.task_id}
+                            />
                         )
                     })
                 }
-            </div>
-            <div className={styled.options}>
+            </Grid>
+            <Options>
                 <button className={styled.addBtn} onClick={handleAddOpen}>
                     <span class="material-symbols-outlined">add</span>
                 </button>
-                <button className={styled.addBtn} onClick={() => setFilterShowing(!filterShowing)}>
-                    <span class="material-symbols-outlined">sort</span>
-                </button>
-                <div className={filterShowing ? styled.filter : styled.filter_hidden}>
-                    <p onClick={(e) => setFilterType('Sem filtro')}>Sem filtro</p>
-                    <p onClick={(e) => setFilterType('A fazer')}>A fazer</p>
-                    <p onClick={(e) => setFilterType('Em andamento')}>Em andamento</p>
-                    <p onClick={(e) => setFilterType('Finalizado')}>Finalizado</p>
-                </div>
-            </div>
-        </div>
-        <AddTask open={isAddOpen} hideModal={handleAddClose} />
-        <DeleteTask open={isDeleteOpen} hideModal={handleDeleteClose} id={currTask} />
+                <Filter filterShowing={filterShowing} setFilterShowing={setFilterShowing} setFilterType={setFilterType}/>
+            </Options>
+        </Page>
+        <AddTask open={isAddOpen} hideModal={handleAddClose}/>
+        <DeleteTask open={isDeleteOpen} hideModal={handleDeleteClose} id={currTask}/>
+        <UpdateTask open={isUpdateOpen} hideModal={handleUpdateClose} id={currTask}/>
     </>
 }

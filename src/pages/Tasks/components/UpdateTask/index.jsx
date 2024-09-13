@@ -1,27 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { requestHook } from '../../../../hooks/request.hook';
 import { useParams } from 'react-router-dom';
 
-export default function AddTask(props){
+export default function UpdateTask(props){
     const [title, setTitle] = useState("")
     const [desc, setDesc] = useState("")
-    const [idChecked, setIdChecked] = useState()
-    const [users, setUsers] = useState([]);
-    const [selectedUser, setSelectedUser] = useState("")
+    const [status, setStatus] = useState("")
     const { groupId } = useParams()
     const { handleRequest } = requestHook()
 
     useEffect(() => {
-        handleGetUsers()
+        handleGetTask()
     }, [props.open])
 
-    async function handleGetUsers(){
+    async function handleGetTask(){
         try {
-            const response = await handleRequest(`/user/getAll`, 'GET');
-            setUsers(response.data.users);
+            const response = await handleRequest(`/task?id=${props.id}`, 'GET');
+            setTitle(response.data.task.title);
+            setDesc(response.data.task.desc);
         } catch (error) {
             console.log(error)
         }
@@ -30,9 +29,10 @@ export default function AddTask(props){
     async function handleSave(e){
         e.preventDefault()
 
-        const task = { title, desc, user_name: selectedUser, group_id: groupId }
-        console.log(task, "AAAAAAAAAAAAAAAA")
-        await handleRequest('/task/create', 'POST', task)
+        console.log(status)
+        const task = { task_id: props.id, title, desc, status }
+        console.log(task)
+        await handleRequest('/task/update', 'PUT', task)
 
         props.hideModal()
         window.location.reload()
@@ -41,34 +41,18 @@ export default function AddTask(props){
     return (
         <Modal show={props.open} onHide={props.hideModal}>
             <Modal.Header closeButton>
-                <Modal.Title>Add Task</Modal.Title>
+                <Modal.Title>Update Task</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form>
                     <Form.Group>
                         <Form.Label>Task name</Form.Label>
-                        <Form.Control value={title} type="text" placeholder="Name" onChange={(e) => setTitle(e.target.value)} maxLength={50}/>
+                        <Form.Control value={title} type="text" placeholder="Title" onChange={(e) => setTitle(e.target.value)} maxLength={50}/>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Description</Form.Label>
                         <Form.Control value={desc} type="text" placeholder="Description" onChange={(e) => setDesc(e.target.value)} maxLength={100}/>
                     </Form.Group>
-                    <Form.Label>Users</Form.Label>
-                    <div style={{ maxHeight: '200px', overflowY: 'auto', border: '1px solid #ccc', padding: '10px' }}>
-                        {users.map(user => (
-                            <Form.Check
-                                key={user.id}
-                                type="radio"
-                                name={'user'}
-                                label={user.fullname}
-                                onClick={() => {
-                                        setSelectedUser(user.fullname);
-                                    }
-                                }
-                            
-                            />
-                        ))}
-                    </div>
                 </Form>
             </Modal.Body>
             <Modal.Footer>

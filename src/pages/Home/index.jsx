@@ -6,9 +6,12 @@ import { groupsHook } from "../../hooks/groups.hook"
 import { GroupContext } from "../../contexts/group.context"
 import { useNavigate } from "react-router-dom"
 import AddGroup from "./components/AddGroup"
-// import { AddButton } from "../../components/AddButton"
 import { UserContext } from "../../contexts/user.context"
 import { groupModalHook } from "../../hooks/groupModal.hook"
+import { Page } from "../../components/Page"
+import { Grid } from "../../components/Grid"
+import { Options } from "../../components/Options"
+import { NoData } from "../../components/NoData"
 
 export const Home = () => {
     const { handleRequest } = requestHook()
@@ -16,11 +19,16 @@ export const Home = () => {
     const { isOpen, handleOpen, handleClose } = groupModalHook()
     const { id } = useContext(UserContext)
     const { setGroupId, setGroupName } = useContext(GroupContext)
+    const [hasGroups, setHasGroups] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
+        handleHasGroups()
         updateGroups(id)
-    }, [id])
+        console.log(id)
+        console.log(hasGroups)
+        console.log(groups.length)
+    }, [id, groups.length])
 
     const updateGroups = async (id) => {
         const response = await handleRequest(`/group/get/user?id=${id}`, 'GET')
@@ -33,10 +41,18 @@ export const Home = () => {
         navigate(`/group/${groupId}`)
     }
 
+    const handleHasGroups = () => {
+        if(groups.length == 0)
+            setHasGroups(false)
+        else
+            setHasGroups(true)
+    }
+
     return <>
         <Navbar />
-        <div className={styled.page}>
-            <div className={styled.groupGrid}>
+        <Page>
+            <Grid>
+                <NoData isShowing={hasGroups}/>
                 {
                     groups.map(g => {
                         return (
@@ -47,14 +63,13 @@ export const Home = () => {
                         )
                     })
                 }
-
+            </Grid>
+            <Options>
                 <button className={styled.addBtn} onClick={handleOpen}>
-                    <span class="material-symbols-outlined" color="white">
-                        add
-                    </span>
+                    <span class="material-symbols-outlined">add</span>
                 </button>
-            </div>
-        </div>
+            </Options>
+        </Page>
         <AddGroup open={isOpen} hideModal={handleClose} />
     </>
 }
