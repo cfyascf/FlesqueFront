@@ -19,7 +19,6 @@ export default function AddGroup(props){
     async function handleGetUsers(){
         try {
             const response = await handleRequest(`/user/getAll`, 'GET');
-            console.log(response.data)
             setUsers(response.data.users);
         } catch (error) {
             console.log(error)
@@ -37,10 +36,11 @@ export default function AddGroup(props){
     async function handleSave(){
         const group = { name: name, admin_id: id }
         const response = await handleRequest('/group/create', 'POST', group);
-        console.log(response.data.group.group_id)
-        selectedUsers.map(user => {
-            // await handleRequest('')
-        })
+        selectedUsers.map(async (user) => {
+            let invite = { "user_id": user, "group_id": response.data.group.group_id, "curr_user_id": id };
+            const response2 = await handleRequest('/group/invite', 'POST', invite);
+        });
+
         props.hideModal();
     }
 
