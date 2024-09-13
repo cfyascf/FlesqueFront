@@ -39,13 +39,14 @@ export const Tasks = () => {
             <div className={styled.tasksGrid}>
                 {
                     tasks.map(t => {
+                        console.log(t)
                         return(
                             <Task
                                 key={t.task.task_id}
                                 title={t.task.title}
                                 responsible={t.user.fullname}
                                 description={t.task.desc}
-                                checkedButton={t.task.status}
+                                checkedButton={t.task.status_id}
                                 deleteModal={handleDeleteOpen}
                                 updateModal={handleUpdateOpen}
                                 id={t.task.task_id}
