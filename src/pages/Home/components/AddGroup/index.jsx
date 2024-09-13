@@ -42,6 +42,7 @@ export default function AddGroup(props){
         });
 
         props.hideModal();
+        window.location.reload()
     }
 
     return (

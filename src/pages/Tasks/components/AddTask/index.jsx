@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 export default function AddTask(props){
     const [title, setTitle] = useState("")
     const [desc, setDesc] = useState("")
-    const [userFullname, setUserFullname] = useState("")
+    const [idChecked, setIdChecked] = useState()
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState("")
     const { groupId } = useParams()
@@ -31,6 +31,7 @@ export default function AddTask(props){
         e.preventDefault()
 
         const task = { title, desc, user_name: selectedUser, group_id: groupId }
+        console.log(task, "AAAAAAAAAAAAAAAA")
         await handleRequest('/task/create', 'POST', task)
 
         props.hideModal()
@@ -58,8 +59,13 @@ export default function AddTask(props){
                             <Form.Check
                                 key={user.id}
                                 type="radio"
+                                name={'user'}
                                 label={user.fullname}
-                                onChange={() => setSelectedUser(user.fullname)}
+                                onClick={() => {
+                                        setSelectedUser(user.fullname);
+                                    }
+                                }
+                            
                             />
                         ))}
                     </div>

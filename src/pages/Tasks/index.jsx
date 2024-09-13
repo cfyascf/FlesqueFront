@@ -55,7 +55,7 @@ export const Tasks = () => {
                     })
                 }
                 <button className={styled.addBtn} onClick={handleAddOpen}>
-                    <span class="material-symbols-outlined" style={{fontSize: "33px"}}>add</span>
+                    <span className="material-symbols-outlined" style={{fontSize: "33px"}}>add</span>
                 </button>
                 
             </div>
