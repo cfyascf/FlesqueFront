@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -9,13 +9,28 @@ export default function AddTask(props){
     const [title, setTitle] = useState("")
     const [desc, setDesc] = useState("")
     const [userFullname, setUserFullname] = useState("")
+    const [users, setUsers] = useState([]);
+    const [selectedUser, setSelectedUser] = useState("")
     const { groupId } = useParams()
     const { handleRequest } = requestHook()
+
+    useEffect(() => {
+        handleGetUsers()
+    }, [props.open])
+
+    async function handleGetUsers(){
+        try {
+            const response = await handleRequest(`/user/getAll`, 'GET');
+            setUsers(response.data.users);
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     async function handleSave(e){
         e.preventDefault()
 
-        const task = { title, desc, user_name: userFullname, group_id: groupId }
+        const task = { title, desc, user_name: selectedUser, group_id: groupId }
         await handleRequest('/task/create', 'POST', task)
 
         props.hideModal()
@@ -37,10 +52,17 @@ export default function AddTask(props){
                         <Form.Label>Description</Form.Label>
                         <Form.Control value={desc} type="text" placeholder="Description" onChange={(e) => setDesc(e.target.value)}/>
                     </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Responsible user</Form.Label>
-                        <Form.Control value={userFullname} type="text" placeholder="User" onChange={(e) => setUserFullname(e.target.value)}/>
-                    </Form.Group>
+                    <Form.Label>Users</Form.Label>
+                    <div style={{ maxHeight: '200px', overflowY: 'auto', border: '1px solid #ccc', padding: '10px' }}>
+                        {users.map(user => (
+                            <Form.Check
+                                key={user.id}
+                                type="radio"
+                                label={user.fullname}
+                                onChange={() => setSelectedUser(user.fullname)}
+                            />
+                        ))}
+                    </div>
                 </Form>
             </Modal.Body>
             <Modal.Footer>
