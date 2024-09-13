@@ -50,7 +50,7 @@ export const Home = () => {
 
                 <button className={styled.addBtn} onClick={handleOpen}>
                     <span class="material-symbols-outlined" color="white">
-                        edit
+                        add
                     </span>
                 </button>
             </div>

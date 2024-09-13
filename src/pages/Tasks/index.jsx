@@ -26,20 +26,22 @@ export const Tasks = () => {
     }
 
     return <>
-        <Navbar/>
+        <Navbar />
         <div className={styled.page}>
             <div className={styled.tasksGrid}>
                 {
                     tasks.map(t => {
-                        return(
-                            <Task key={t.task.task_id} title={t.task.title} responsible={t.user.fullname} description={t.task.desc} checkedButton={t.task.status} open={handleDeleteOpen} id={t.task.task_id}/>
+                        return (
+                            <Task key={t.task.task_id} title={t.task.title} responsible={t.user.fullname} description={t.task.desc} checkedButton={t.task.status} open={handleDeleteOpen} id={t.task.task_id} />
                         )
                     })
                 }
-                <button className={styled.addBtn} onClick={handleAddOpen}>+</button>
+                <button className={styled.addBtn} onClick={handleAddOpen}>
+                    <span class="material-symbols-outlined">add</span>
+                </button>
             </div>
         </div>
-        <AddTask open={isAddOpen} hideModal={handleAddClose}/>
-        <DeleteTask open={isDeleteOpen} hideModal={handleDeleteClose} id={currTask}/>
+        <AddTask open={isAddOpen} hideModal={handleAddClose} />
+        <DeleteTask open={isDeleteOpen} hideModal={handleDeleteClose} id={currTask} />
     </>
 }
