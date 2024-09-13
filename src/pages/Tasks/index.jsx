@@ -53,7 +53,10 @@ export const Tasks = () => {
                         )
                     })
                 }
-                <button className={styled.addBtn} onClick={handleAddOpen}>+</button>
+                <button className={styled.addBtn} onClick={handleAddOpen}>
+                    <span class="material-symbols-outlined" style={{fontSize: "33px"}}>add</span>
+                </button>
+                
             </div>
         </div>
         <AddTask open={isAddOpen} hideModal={handleAddClose}/>
