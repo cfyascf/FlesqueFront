@@ -8,8 +8,8 @@ export const Task = ({ title, responsible, description, checkedButton, open, id 
             <div className={styled.header}>
                 <p className={styled.title}>{ title }</p>
                 <div className={styled.headerButtons}>
-                    <span class="material-symbols-outlined" className={styled.icon}>edit</span>
-                    <span class="material-symbols-outlined" className={styled.icon}>delete</span>
+                    <span class="material-symbols-outlined" style={{fontSize: "22px", color:"#858585"}}>edit</span>
+                    <span class="material-symbols-outlined" style={{fontSize: "22px", color:"#858585"}}>delete</span>
                 </div>
             </div>
             <p className={styled.responsible}>Para { responsible }</p>

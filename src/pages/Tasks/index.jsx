@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Navbar } from "../../components/Navbar"
 import { groupsHook } from "../../hooks/groups.hook"
 import { Task } from "./components/Task"
@@ -15,12 +15,26 @@ export const Tasks = () => {
     const { groupId } = useParams()
     const { handleRequest } = requestHook()
 
+    const [filterShowing, setFilterShowing] = useState(false)
+    const [filterType, setFilterType] = useState('Sem filtro')
+    const [hasTasks, setHasTasks] = useState(false)
+
     useEffect(() => {
+        handleHasTasks()
+
         updateTasks()
-    }, [])
+        console.log(filterType)
+    }, [filterType])
+
+    const handleHasTasks = () => {
+        if(tasks.length == 0)
+            setHasTasks(false)
+        else
+            setHasTasks(true)
+    }
 
     const updateTasks = async () => {
-        const response = await handleRequest(`/task/group?id=${groupId}`, 'GET')
+        const response = await handleRequest(`/task/group?id=${groupId}&filter=${filterType}`, 'GET')
         console.log(response)
         fillTasks(response.data.group_tasks)
     }
@@ -28,6 +42,7 @@ export const Tasks = () => {
     return <>
         <Navbar />
         <div className={styled.page}>
+            {/* DO HAS NO TASKS WARNING */}
             <div className={styled.tasksGrid}>
                 {
                     tasks.map(t => {
@@ -36,9 +51,20 @@ export const Tasks = () => {
                         )
                     })
                 }
+            </div>
+            <div className={styled.options}>
                 <button className={styled.addBtn} onClick={handleAddOpen}>
                     <span class="material-symbols-outlined">add</span>
                 </button>
+                <button className={styled.addBtn} onClick={() => setFilterShowing(!filterShowing)}>
+                    <span class="material-symbols-outlined">sort</span>
+                </button>
+                <div className={filterShowing ? styled.filter : styled.filter_hidden}>
+                    <p onClick={(e) => setFilterType('Sem filtro')}>Sem filtro</p>
+                    <p onClick={(e) => setFilterType('A fazer')}>A fazer</p>
+                    <p onClick={(e) => setFilterType('Em andamento')}>Em andamento</p>
+                    <p onClick={(e) => setFilterType('Finalizado')}>Finalizado</p>
+                </div>
             </div>
         </div>
         <AddTask open={isAddOpen} hideModal={handleAddClose} />
