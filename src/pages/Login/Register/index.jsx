@@ -13,11 +13,15 @@ export default function Register(props){
     const { handleRequest } = requestHook()
 
     async function handleSave(){
-        const user = { fullname, password, email, birth }
-        console.log(user)
-        const response = await handleRequest('/user/register', 'POST', user);
-        console.log(response)
-        props.hideModal();
+        try {
+            const user = { fullname, password, email, birth }
+            console.log(user, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa")
+            const response = await handleRequest('/user/register', 'POST', user);
+            console.log(response)
+            props.hideModal();
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (

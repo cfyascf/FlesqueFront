@@ -36,13 +36,19 @@ export default function AddGroup(props){
     async function handleSave(){
         const group = { name: name, admin_id: id }
         const response = await handleRequest('/group/create', 'POST', group);
+        await handleRequest('/group/invite', 'POST',
+            { "user_id": id, "group_id": response.data.group.group_id, "curr_user_id": id });
+        // console.log(selectedUsers, "OOOOOOOOOOOOOOOOOOOOO")
+        // setSelectedUsers([...selectedUsers, parseInt(id)])
+        // console.log(selectedUsers, "YYYYYYYYYYYYYYYYYYYYY")
         selectedUsers.map(async (user) => {
             let invite = { "user_id": user, "group_id": response.data.group.group_id, "curr_user_id": id };
             const response2 = await handleRequest('/group/invite', 'POST', invite);
+            console.log(response2, "PPPPPPPPPPPPPPPPPPPPPPPPPPPPP")
         });
 
         props.hideModal();
-        window.location.reload()
+        window.location.reload();
     }
 
     return (

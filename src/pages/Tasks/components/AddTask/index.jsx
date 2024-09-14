@@ -20,7 +20,7 @@ export default function AddTask(props){
 
     async function handleGetUsers(){
         try {
-            const response = await handleRequest(`/user/getAll`, 'GET');
+            const response = await handleRequest(`/user/getByGroup?group_id=${groupId}`, 'GET');
             setUsers(response.data.users);
         } catch (error) {
             console.log(error)

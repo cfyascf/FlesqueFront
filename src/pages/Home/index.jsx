@@ -31,8 +31,12 @@ export const Home = () => {
     }, [id, groups.length])
 
     const updateGroups = async (id) => {
-        const response = await handleRequest(`/group/get/user?id=${id}`, 'GET')
-        fillGroups(response.data.user_groups)
+        if(id){
+            console.log(id, "FFFFFFFFFFFFFFFFFFFFFFFFFF")
+            const response = await handleRequest(`/group/get/user?id=${id}`, 'GET')
+            console.log(response, "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRR")
+            fillGroups(response.data.user_groups)
+        }
     }
 
     const handleClick = (groupId, groupName) => (e) => {
